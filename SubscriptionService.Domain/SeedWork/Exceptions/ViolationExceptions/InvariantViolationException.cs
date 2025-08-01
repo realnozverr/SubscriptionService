@@ -1,6 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SubscriptionService.Domain.SeedWork.Exceptions.ViolationExceptions;
 
-public class SubscriptionStateConflictException : ViolationException
-{
-    
-}
+[ExcludeFromCodeCoverage]
+public class InvariantViolationException(string message = "Invariant violation") : ViolationException(message);

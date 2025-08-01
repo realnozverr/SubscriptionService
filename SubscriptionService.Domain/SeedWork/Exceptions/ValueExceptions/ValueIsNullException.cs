@@ -1,6 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SubscriptionService.Domain.SeedWork.Exceptions.ValueExceptions;
 
-public class ValueIsNullException
-{
-    
-}
+[ExcludeFromCodeCoverage]
+public class ValueIsNullException(string message = "Value is null") : ValueException(message);

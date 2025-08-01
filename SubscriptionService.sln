@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriptionService.API", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriptionService.Domain", "SubscriptionService.Domain\SubscriptionService.Domain.csproj", "{3F110739-E4E3-41D7-8E99-9652BBF84E2D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{722E400A-10B5-472A-923E-C9F3676E0921}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{11D1342A-D8B2-44D3-A049-603E494C4C7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,9 @@ Global
 		{3F110739-E4E3-41D7-8E99-9652BBF84E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F110739-E4E3-41D7-8E99-9652BBF84E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F110739-E4E3-41D7-8E99-9652BBF84E2D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C0C34FA5-D1A8-4D10-ABC0-9447850BC9C1} = {722E400A-10B5-472A-923E-C9F3676E0921}
+		{3F110739-E4E3-41D7-8E99-9652BBF84E2D} = {722E400A-10B5-472A-923E-C9F3676E0921}
 	EndGlobalSection
 EndGlobal

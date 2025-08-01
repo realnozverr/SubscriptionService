@@ -11,20 +11,22 @@ public class User : Aggregate<Guid>
     private User(
         TelegramId telegramId,
         string vpnIdentifier,
-        UserStatus status,
-        Guid currentSubscription
+        UserStatus status
     ) : this()
     {
         Id = Guid.NewGuid();
         TelegramId = telegramId;
         VpnIdentifier = vpnIdentifier;
         Status = status;
-        CurrentSubscription = currentSubscription;
     }
 
-    public TelegramId TelegramId { get; protected set; }
-    public string? VpnIdentifier { get; protected set; }
-    public UserStatus Status { get; protected set; }
-    public Guid CurrentSubscription { get; protected set; }
-    public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
+    public TelegramId TelegramId { get; private set; }
+    public string? VpnIdentifier { get; private set; }
+    public UserStatus Status { get; private set; }
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+
+    public static User Create(TelegramId telegramId, string? vpnIdentifier, UserStatus status)
+    {
+        
+    }
 }

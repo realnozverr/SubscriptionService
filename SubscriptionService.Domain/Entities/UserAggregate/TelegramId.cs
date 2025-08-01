@@ -1,4 +1,5 @@
 using SubscriptionService.Domain.SeedWork;
+using SubscriptionService.Domain.SeedWork.Exceptions.ValueExceptions;
 
 namespace SubscriptionService.Domain.Entities.UserAggregate;
 
@@ -18,7 +19,7 @@ public class TelegramId : ValueObject
     public static TelegramId Create(long value)
     {
         if (value <= 0)
-            throw new ArgumentOutOfRangeException(nameof(value), "Telegram id cannot be negative.");
+            throw new ValueOutOfRangeException($"{nameof(value)} Telegram id cannot be negative.");
 
         return new TelegramId(value);
     }

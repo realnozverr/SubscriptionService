@@ -1,6 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SubscriptionService.Domain.SeedWork.Exceptions.ValueExceptions;
 
-public class ValueIsInvalidException
-{
-    
-}
+[ExcludeFromCodeCoverage]
+public class ValueIsInvalidException(string message = "Value is invalid") :  ValueException(message);

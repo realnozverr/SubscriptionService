@@ -1,6 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SubscriptionService.Domain.SeedWork.Exceptions.ValueExceptions;
 
-public class ValueException
-{
-    
-}
+[ExcludeFromCodeCoverage]
+public class ValueException(string message) : Exception(message);

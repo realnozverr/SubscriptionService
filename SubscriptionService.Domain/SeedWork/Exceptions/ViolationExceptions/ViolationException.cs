@@ -1,6 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SubscriptionService.Domain.SeedWork.Exceptions.ViolationExceptions;
 
-public class ViolationException
-{
-    
-}
+[ExcludeFromCodeCoverage]
+public class ViolationException(string message) : Exception(message);
