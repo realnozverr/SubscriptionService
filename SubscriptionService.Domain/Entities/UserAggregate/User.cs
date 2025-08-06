@@ -33,7 +33,7 @@ public class User : Aggregate<Guid>
         return new User(telegramId, vpnIdentifier, status);
     }
 
-    // Подумоть когда его валидировать
+    // TODO Подумать когда его валидировать
     private static void ValidateVpnIdentifier(string? vpnIdentifier)
     {
         if (string.IsNullOrWhiteSpace(vpnIdentifier))
