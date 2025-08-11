@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore.Storage;
+using Newtonsoft.Json;
 using SubscriptionService.Domain.Abstractions;
+using SubscriptionService.Domain.SeedWork;
+using SubscriptionService.Infrastructure.Postgres.Outbox;
 
 namespace SubscriptionService.Infrastructure.Postgres;
 
@@ -26,7 +29,7 @@ public sealed class UnitOfWork : IUnitOfWork
     /// <summary>
     /// Начинает новую транзакцию базы данных.
     /// </summary>
-    public async Task BeginTransaction(CancellationToken cancellationToken = default)
+    public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
         if (_transaction != null)
             throw new InvalidOperationException("Transaction active.");
@@ -37,7 +40,7 @@ public sealed class UnitOfWork : IUnitOfWork
     /// <summary>
     /// Сохраняет все изменения в базу данных и фиксирует текущую транзакцию.
     /// </summary>
-    public async Task Commit(CancellationToken cancellationToken = default)
+    public async Task CommitAsync(CancellationToken cancellationToken = default)
     {
         if (_transaction == null)
             throw new InvalidOperationException("No active transaction.");
@@ -46,10 +49,11 @@ public sealed class UnitOfWork : IUnitOfWork
         {
             await _context.SaveChangesAsync(cancellationToken);
             await _transaction.CommitAsync(cancellationToken);
+            await SaveDomainEventsInOutboxAsync();
         }
         catch
         {
-            await Rollback(cancellationToken);
+            await RollbackAsync(cancellationToken);
             throw;
         }
         finally
@@ -61,7 +65,7 @@ public sealed class UnitOfWork : IUnitOfWork
     /// <summary>
     /// Откатывает текущую транзакцию.
     /// </summary>
-    public async Task Rollback(CancellationToken cancellationToken = default)
+    public async Task RollbackAsync(CancellationToken cancellationToken = default)
     {
         if (_transaction == null) return;
 
@@ -73,6 +77,38 @@ public sealed class UnitOfWork : IUnitOfWork
         {
             await DisposeTransactionAsync();
         }
+    }
+
+    /// <summary>
+    /// Метод для отправки ивентов в outbox
+    /// </summary>
+    private async Task SaveDomainEventsInOutboxAsync()
+    {
+        var outboxMessages = _context.ChangeTracker
+            .Entries<IAggregate>()
+            .Select(x => x.Entity)
+            .SelectMany(aggregate =>
+                {
+                    var domainEvents = new List<DomainEvent>(aggregate.DomainEvents);;
+                    aggregate.ClearDomainEvents();
+                    return domainEvents;
+                }
+            )
+            .Select(domainEvent => new OutboxMessage
+            {
+                Id = domainEvent.EventId,
+                OccurredOnUtc = DateTime.UtcNow,
+                Type = domainEvent.GetType().Name,
+                Content = JsonConvert.SerializeObject(
+                    domainEvent,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    })
+            })
+            .ToList();
+        
+        await _context.Set<OutboxMessage>().AddRangeAsync(outboxMessages);
     }
 
     private async ValueTask DisposeTransactionAsync()
@@ -95,7 +131,7 @@ public sealed class UnitOfWork : IUnitOfWork
         // Если транзакция всё ещё открыта (забыли вызвать Commit/Rollback), откатываем её.
         if (_transaction != null)
         {
-            await Rollback();
+            await RollbackAsync();
         }
 
         await _context.DisposeAsync();
