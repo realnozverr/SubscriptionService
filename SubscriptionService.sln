@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{11D1342A-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriptionService.Infrastructure", "SubscriptionService.Infrastructure\SubscriptionService.Infrastructure.csproj", "{2F9CF49B-5C5B-4637-A694-14E3ED2E4869}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriptionService.Application", "SubscriptionService.Application\SubscriptionService.Application.csproj", "{3DAA338C-E713-42F6-8DDF-3B47EDC24503}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,10 +30,15 @@ Global
 		{2F9CF49B-5C5B-4637-A694-14E3ED2E4869}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F9CF49B-5C5B-4637-A694-14E3ED2E4869}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F9CF49B-5C5B-4637-A694-14E3ED2E4869}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DAA338C-E713-42F6-8DDF-3B47EDC24503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DAA338C-E713-42F6-8DDF-3B47EDC24503}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DAA338C-E713-42F6-8DDF-3B47EDC24503}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DAA338C-E713-42F6-8DDF-3B47EDC24503}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C0C34FA5-D1A8-4D10-ABC0-9447850BC9C1} = {722E400A-10B5-472A-923E-C9F3676E0921}
 		{3F110739-E4E3-41D7-8E99-9652BBF84E2D} = {722E400A-10B5-472A-923E-C9F3676E0921}
 		{2F9CF49B-5C5B-4637-A694-14E3ED2E4869} = {722E400A-10B5-472A-923E-C9F3676E0921}
+		{3DAA338C-E713-42F6-8DDF-3B47EDC24503} = {722E400A-10B5-472A-923E-C9F3676E0921}
 	EndGlobalSection
 EndGlobal

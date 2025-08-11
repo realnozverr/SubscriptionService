@@ -34,7 +34,7 @@ public sealed class OutboxMessage
     /// <summary>
     /// Текст ошибки, если при обработке произошел сбой.
     /// </summary>
-    public string? Error { get; private set; }
+    public string? Error { get; private set; } = null;
 
     /// <summary>
     /// Пометка о выполнении ивента.

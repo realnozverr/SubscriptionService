@@ -47,9 +47,9 @@ public sealed class UnitOfWork : IUnitOfWork
 
         try
         {
+            await SaveDomainEventsInOutboxAsync();
             await _context.SaveChangesAsync(cancellationToken);
             await _transaction.CommitAsync(cancellationToken);
-            await SaveDomainEventsInOutboxAsync();
         }
         catch
         {
@@ -80,7 +80,7 @@ public sealed class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
-    /// Метод для отправки ивентов в outbox
+    /// Метод для сбора и отправки ивентов в outbox
     /// </summary>
     private async Task SaveDomainEventsInOutboxAsync()
     {
