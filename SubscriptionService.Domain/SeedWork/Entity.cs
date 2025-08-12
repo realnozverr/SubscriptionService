@@ -3,7 +3,7 @@ namespace SubscriptionService.Domain.SeedWork;
 public abstract class Entity<TId> : IComparable, IComparable<Entity<TId>>
     where TId : IComparable<TId>
 {
-    public virtual TId Id { get; protected set; }
+    public virtual TId? Id { get; protected set; }
 
     protected Entity()
     {
@@ -14,7 +14,7 @@ public abstract class Entity<TId> : IComparable, IComparable<Entity<TId>>
         Id = id;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (!(obj is Entity<TId> other))
             return false;
@@ -28,7 +28,7 @@ public abstract class Entity<TId> : IComparable, IComparable<Entity<TId>>
         if (IsTransient() || other.IsTransient())
             return false;
 
-        return Id.Equals(other.Id);
+        return Id!.Equals(other.Id);
     }
 
     private bool IsTransient()
@@ -57,7 +57,7 @@ public abstract class Entity<TId> : IComparable, IComparable<Entity<TId>>
         return Id?.GetHashCode() ?? 0;
     }
 
-    public virtual int CompareTo(Entity<TId> other)
+    public virtual int CompareTo(Entity<TId>? other)
     {
         if (other is null)
             return 1;
@@ -65,10 +65,10 @@ public abstract class Entity<TId> : IComparable, IComparable<Entity<TId>>
         if (ReferenceEquals(this, other))
             return 0;
 
-        return Id.CompareTo(other.Id);
+        return Id!.CompareTo(other.Id);
     }
 
-    public int CompareTo(object other)
+    public int CompareTo(object? other)
     {
         return CompareTo(other as Entity<TId>);
     }

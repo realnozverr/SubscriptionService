@@ -11,7 +11,7 @@ public class User : Aggregate<Guid>
 
     private User(
         TelegramId telegramId,
-        string vpnIdentifier,
+        string? vpnIdentifier,
         UserStatus status
     ) : this()
     {
@@ -32,8 +32,8 @@ public class User : Aggregate<Guid>
         ValidateUserStatus(status);
         return new User(telegramId, vpnIdentifier, status);
     }
-
-    // TODO Подумать когда его валидировать
+    
+    // TODO подумать когда валидировать
     private static void ValidateVpnIdentifier(string? vpnIdentifier)
     {
         if (string.IsNullOrWhiteSpace(vpnIdentifier))
@@ -52,7 +52,7 @@ public class User : Aggregate<Guid>
 
     private static void ValidateUserStatus(UserStatus userStatus)
     {
-        if (userStatus == null)
+        if (userStatus is null)
         {
             throw new ValueIsNullException("UserStatus cannot be null.");
         }

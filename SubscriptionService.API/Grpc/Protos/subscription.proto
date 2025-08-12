@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Proto.SubscriptionV1";
+
+package Subscription.v1;
+
+service Subscription {
+  rpc GetOrCreateUser (GetOrCreateUserRequest) returns (UserResponse);
+  rpc ListAvailablePlans (ListAvailablePlansRequest) returns (ListAvailablePlansResponse);
+  rpc CreatePaymentOrder (CreatePaymentOrderRequest) returns (CreatePaymentOrderResponse);
+  rpc GetSubscriptionStatus (GetSubscriptionStatusRequest) returns (SubscriptionStatusResponse);
+}
+
+// --- GetOrCreateUser ---
+message GetOrCreateUserRequest {
+  int64 telegram_id = 1;
+  string telegram_username = 2;
+}
+
+message UserResponse {
+  string user_id = 1;       // Наш внутренний ID (GUID)
+  int64 telegram_id = 2;
+  string status = 3;        // "Active", "Blocked"
+}
+
+
+// --- ListAvailablePlans ---
+message ListAvailablePlansRequest {
+  // Запрос может быть пустым, если не нужна фильтрация или пагинация.
+}
+
+message ListAvailablePlansResponse {
+  repeated Plan plans = 1;
+}
+
+// Общая модель тарифного плана
+message Plan {
+  string id = 1;
+  string name = 2;          // "1 месяц", "6 месяцев"
+  string description = 3;   // "Подписка на 30 дней"
+  double price = 4;
+  string currency = 5;      // "RUB", "USD"
+}
+
+
+// --- CreatePaymentOrder ---
+message CreatePaymentOrderRequest {
+  string user_id = 1;
+  string plan_id = 2;
+}
+
+message CreatePaymentOrderResponse {
+  string payment_url = 1;   // Ссылка на страницу оплаты
+  string order_id = 2;      // ID заказа в нашей системе
+}
+
+
+// --- GetSubscriptionStatus ---
+message GetSubscriptionStatusRequest {
+  string user_id = 1;
+}
+
+message SubscriptionStatusResponse {
+  string plan_name = 1;
+  string status = 2;        // "Active", "Expired", "Cancelled", "NoSubscription"
+  google.protobuf.Timestamp expires_at_utc = 3;
+  bool has_active_subscription = 4;
+}

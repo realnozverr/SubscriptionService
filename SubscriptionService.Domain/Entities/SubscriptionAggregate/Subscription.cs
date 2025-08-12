@@ -55,9 +55,9 @@ public class Subscription : Aggregate<Guid>
 
     public static Subscription Create(User user, Plan plan, TimeProvider timeProvider)
     {
-        if (user == null)
+        if (user is null)
             throw new ValueIsNullException($"{nameof(user)} cannot be null");
-        if (plan == null)
+        if (plan is null)
             throw new ValueIsNullException($"{nameof(plan)} cannot be null");
 
         var startDateTime = timeProvider.GetUtcNow().UtcDateTime;
