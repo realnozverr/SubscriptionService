@@ -17,7 +17,7 @@ public class Subscription : Aggregate<Guid>
 
     private Subscription(
         Guid userId,
-        Guid planId,
+        int planId,
         SubscriptionStatus status,
         DateTime startDate,
         DateTime endDate
@@ -32,7 +32,7 @@ public class Subscription : Aggregate<Guid>
     }
 
     public Guid UserId { get; private set; }
-    public Guid PlanId { get; private set; }
+    public int PlanId { get; private set; }
     public SubscriptionStatus Status { get; private set; }
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }

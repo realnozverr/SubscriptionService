@@ -8,7 +8,15 @@
 
     <ItemGroup>
       <Folder Include="DomainEventHandlers\" />
-      <Folder Include="UseCases\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentResults" Version="4.0.0" />
+      <PackageReference Include="MediatR" Version="13.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SubscriptionService.Domain\SubscriptionService.Domain.csproj" />
     </ItemGroup>
 
 </Project>

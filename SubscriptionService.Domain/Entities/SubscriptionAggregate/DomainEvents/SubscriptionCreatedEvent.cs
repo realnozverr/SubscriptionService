@@ -5,6 +5,6 @@ namespace SubscriptionService.Domain.Entities.SubscriptionAggregate.DomainEvents
 public record SubscriptionCreatedEvent(
     Guid SubscriptionId,
     Guid UserId,
-    Guid PlanId,
+    int PlanId,
     DateTime EndDate
 ) : DomainEvent;

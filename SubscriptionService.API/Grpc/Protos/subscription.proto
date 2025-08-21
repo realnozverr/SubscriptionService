@@ -4,9 +4,24 @@ import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "Proto.SubscriptionV1";
 
-package Subscription.v1;
+package subscription.v1;  // Изменено на lowercase
 
-service Subscription {
+// Уникальные значения с префиксами
+enum SubscriptionStatusProto {
+  SUBSCRIPTION_STATUS_UNKNOWN = 0;
+  SUBSCRIPTION_STATUS_ACTIVE = 1;
+  SUBSCRIPTION_STATUS_EXPIRED = 2;
+  SUBSCRIPTION_STATUS_CANCELLED = 3;
+}
+
+enum UserStatusProto {
+  USER_STATUS_UNKNOWN = 0;
+  USER_STATUS_ACTIVE = 1;
+  USER_STATUS_BLOCKED = 2;
+  USER_STATUS_EXPIRED = 3;
+}
+
+service SubscriptionService {
   rpc GetOrCreateUser (GetOrCreateUserRequest) returns (UserResponse);
   rpc ListAvailablePlans (ListAvailablePlansRequest) returns (ListAvailablePlansResponse);
   rpc CreatePaymentOrder (CreatePaymentOrderRequest) returns (CreatePaymentOrderResponse);
@@ -20,30 +35,28 @@ message GetOrCreateUserRequest {
 }
 
 message UserResponse {
-  string user_id = 1;       // Наш внутренний ID (GUID)
+  string user_id = 1;
   int64 telegram_id = 2;
-  string status = 3;        // "Active", "Blocked"
+  UserStatusProto status = 3; 
+  optional string vpn_identifier = 4;  
+  google.protobuf.Timestamp created_at = 5;  
 }
-
 
 // --- ListAvailablePlans ---
-message ListAvailablePlansRequest {
-  // Запрос может быть пустым, если не нужна фильтрация или пагинация.
-}
+message ListAvailablePlansRequest {}
 
 message ListAvailablePlansResponse {
   repeated Plan plans = 1;
 }
 
-// Общая модель тарифного плана
 message Plan {
   string id = 1;
-  string name = 2;          // "1 месяц", "6 месяцев"
-  string description = 3;   // "Подписка на 30 дней"
+  string name = 2;
+  string description = 3;
   double price = 4;
-  string currency = 5;      // "RUB", "USD"
+  string currency = 5;
+  int32 duration_days = 6;  
 }
-
 
 // --- CreatePaymentOrder ---
 message CreatePaymentOrderRequest {
@@ -52,10 +65,10 @@ message CreatePaymentOrderRequest {
 }
 
 message CreatePaymentOrderResponse {
-  string payment_url = 1;   // Ссылка на страницу оплаты
-  string order_id = 2;      // ID заказа в нашей системе
+  string payment_url = 1;
+  string order_id = 2;
+  google.protobuf.Timestamp valid_until = 3;  
 }
-
 
 // --- GetSubscriptionStatus ---
 message GetSubscriptionStatusRequest {
@@ -63,8 +76,10 @@ message GetSubscriptionStatusRequest {
 }
 
 message SubscriptionStatusResponse {
-  string plan_name = 1;
-  string status = 2;        // "Active", "Expired", "Cancelled", "NoSubscription"
-  google.protobuf.Timestamp expires_at_utc = 3;
-  bool has_active_subscription = 4;
+  string plan_id = 1;  
+  string plan_name = 2;
+  SubscriptionStatusProto status = 3;  
+  google.protobuf.Timestamp start_date_utc = 4; 
+  google.protobuf.Timestamp end_date_utc = 5;  
+  bool has_active_subscription = 6;
 }
