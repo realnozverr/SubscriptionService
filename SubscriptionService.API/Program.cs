@@ -31,7 +31,9 @@ public class Program
             configure
                 .AddJob<OutboxBackgroundJob>(j => j.WithIdentity(jobKey))
                 .AddTrigger(trigger => trigger.ForJob(jobKey)
-                    .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(3).RepeatForever()));
+                    .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10).RepeatForever()));
+
+            configure.UseMicrosoftDependencyInjectionJobFactory();
         });
         builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 
