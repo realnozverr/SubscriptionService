@@ -74,8 +74,8 @@ public sealed class OutboxBackgroundJob : IJob
         return await dbContext.OutboxMessages
             .FromSqlRaw($@"
                 SELECT * FROM ""outbox""
-                WHERE ""ProcessedOnUtc"" IS NULL
-                ORDER BY ""OccurredOnUtc""
+                WHERE ""processed_on_utc"" IS NULL
+                ORDER BY ""occurred_on_utc""
                 LIMIT {batchSize}
                 FOR UPDATE SKIP LOCKED")
             .AsNoTracking()
