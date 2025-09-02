@@ -8,8 +8,14 @@ using SubscriptionService.Infrastructure.Postgres;
 using SubscriptionService.Infrastructure.Postgres.Repositories;
 using Quartz;
 using SubscriptionKafkaContracts.From.SubscriptionKafkaEvents;
+using SubscriptionService.API.Mapper;
 using SubscriptionService.Application.Abstractions.Kafka;
+using SubscriptionService.Application.UseCases.Commands.CreatePaymentOrderCommand;
+using SubscriptionService.Application.UseCases.Commands.CreateSubscriptionCommand;
+using SubscriptionService.Application.UseCases.Queries.GetListAvailablePlans;
+using SubscriptionService.Application.UseCases.Queries.GetSubscriptionStatusQuery;
 using SubscriptionService.Infrastructure.kafka;
+using SubscriptionService.Infrastructure.Postgres.BackgroundJobs;
 using SubscriptionService.Infrastructure.Postgres.Outbox;
 
 namespace SubscriptionService.API;
@@ -21,6 +27,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddGrpc();
+        builder.Services.AddSingleton(TimeProvider.System);
+        builder.Services.AddScoped<StatusMapper>();
 
         builder.Services.AddDbContextFactory<DataContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
@@ -31,15 +39,21 @@ public class Program
 
         builder.Services.AddQuartz(configure =>
         {
-            var jobKey = new JobKey(nameof(OutboxBackgroundJob));
+            var outboxJobKey = new JobKey(nameof(OutboxBackgroundJob));
             configure
-                .AddJob<OutboxBackgroundJob>(j => j.WithIdentity(jobKey))
-                .AddTrigger(trigger => trigger.ForJob(jobKey)
+                .AddJob<OutboxBackgroundJob>(j => j.WithIdentity(outboxJobKey))
+                .AddTrigger(trigger => trigger.ForJob(outboxJobKey)
                     .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10).RepeatForever()));
+
+            var checkExpiredJobKey = new JobKey(nameof(CheckExpiredSubscriptionsBackgroundJob));
+            configure
+                .AddJob<CheckExpiredSubscriptionsBackgroundJob>(j => j.WithIdentity(checkExpiredJobKey))
+                .AddTrigger(trigger => trigger.ForJob(checkExpiredJobKey)
+                    .WithSimpleSchedule(schedule => schedule.WithIntervalInMinutes(30).RepeatForever()));
 
             configure.UseMicrosoftDependencyInjectionJobFactory();
         });
-        
+
         builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 
         builder.Services.Configure<KafkaTopicsConfiguration>(builder.Configuration.GetSection("KafkaTopics"));
@@ -55,10 +69,14 @@ public class Program
                 });
             });
         });
-        
+
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(
-                typeof(GetOrCreateUserHandler).Assembly
+                typeof(GetOrCreateUserHandler).Assembly,
+                typeof(CreateSubscriptionHandler).Assembly,
+                typeof(CreatePaymentOrderHandler).Assembly,
+                typeof(GetListAvailablePlansHandler).Assembly,
+                typeof(GetSubscriptionStatusHandler).Assembly
             )
         );
 
@@ -71,6 +89,7 @@ public class Program
                 dbContext.Database.Migrate();
             }
         }
+
         app.MapGrpcService<SubscriptionV1>();
         app.Run();
     }

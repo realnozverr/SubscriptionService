@@ -5,7 +5,7 @@ using SubscriptionService.Domain.Entities.SubscriptionAggregate.DomainEvents;
 namespace SubscriptionService.Application.DomainEventHandlers;
 
 public class SubscriptionCreatedHandler(IMessageBus messageBus)
-: INotificationHandler<SubscriptionCreatedEvent>
+    : INotificationHandler<SubscriptionCreatedEvent>
 {
     public async Task Handle(SubscriptionCreatedEvent @event, CancellationToken cancellationToken)
     {

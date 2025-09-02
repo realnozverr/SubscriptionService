@@ -30,7 +30,7 @@ public class SubscriptionRepository(DataContext context) : ISubscriptionReposito
             .FirstOrDefaultAsync(s => s.UserId == userId && s.Status == SubscriptionStatus.Active, cancellationToken);
     }
 
-    public async Task<IEnumerable<Subscription>> GetSubscriptionsToExpireAsync(DateTime date,
+    public async Task<IEnumerable<Subscription>> GetAllSubscriptionsToExpireAsync(DateTime date,
         CancellationToken cancellationToken = default)
     {
         return await context.Subscriptions

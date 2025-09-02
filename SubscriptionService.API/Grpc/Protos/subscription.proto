@@ -26,6 +26,7 @@ service SubscriptionService {
   rpc ListAvailablePlans (ListAvailablePlansRequest) returns (ListAvailablePlansResponse);
   rpc CreatePaymentOrder (CreatePaymentOrderRequest) returns (CreatePaymentOrderResponse);
   rpc GetSubscriptionStatus (GetSubscriptionStatusRequest) returns (SubscriptionStatusResponse);
+  rpc CreateSubscription (CreateSubscriptionRequest) returns (CreateSubscriptionResponse);
 }
 
 // --- GetOrCreateUser ---
@@ -82,4 +83,14 @@ message SubscriptionStatusResponse {
   google.protobuf.Timestamp start_date_utc = 4; 
   google.protobuf.Timestamp end_date_utc = 5;  
   bool has_active_subscription = 6;
+}
+
+// --- CreateSubscription ---
+message CreateSubscriptionRequest {
+  string user_id = 1;
+  int32 plan_id =2;
+}
+
+message CreateSubscriptionResponse {
+  string subscription_id = 1;
 }

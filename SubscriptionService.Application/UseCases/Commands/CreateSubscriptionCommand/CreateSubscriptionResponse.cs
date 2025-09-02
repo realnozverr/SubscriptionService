@@ -1,0 +1,3 @@
+namespace SubscriptionService.Application.UseCases.Commands.CreateSubscriptionCommand;
+
+public record CreateSubscriptionResponse(Guid SubscriptionId);

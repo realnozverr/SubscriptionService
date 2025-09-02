@@ -25,6 +25,6 @@ public class GetOrCreateUserHandler : IRequestHandler<GetOrCreateUserCommand, Re
             await _userRepository.AddAsync(user, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
         }
-        return Result.Ok(new GetOrCreateUserResponse(user.Id, user.TelegramId.Value, user.Status.Name));
+        return Result.Ok(new GetOrCreateUserResponse(user.Id, user.TelegramId.Value, user.Status));
     }
 }
