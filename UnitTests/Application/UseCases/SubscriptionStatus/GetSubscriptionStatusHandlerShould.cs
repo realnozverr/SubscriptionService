@@ -49,8 +49,8 @@ public class GetSubscriptionStatusHandlerShould
     [Fact]
     public async Task Handle_Should_ReturnFailure_WhenSubscriptionExistsButPlanNotFound()
     {
-        // Arrange
-        var user = User.Create(TelegramId.Create(123), "vpnId", UserStatus.Active);
+        // Arrangeß
+        var user = User.Create(TelegramId.Create(123), "vpnId", "test_name", UserStatus.Active);
         var plan = Plan.Monthly;
         var subscription = Subscription.Create(user, plan, _timeProvider);
 
@@ -76,7 +76,7 @@ public class GetSubscriptionStatusHandlerShould
     public async Task Handle_Should_ReturnActiveSubscription_WhenSubscriptionAndPlanExist()
     {
         // Arrange
-        var user = User.Create(TelegramId.Create(123), "vpnId", UserStatus.Active);
+        var user = User.Create(TelegramId.Create(123), "vpnId", "test_name", UserStatus.Active);
         var plan = Plan.Monthly;
         var startDate = _timeProvider.GetUtcNow().DateTime;
         var endDate = startDate.AddDays(plan.DurationInDays);

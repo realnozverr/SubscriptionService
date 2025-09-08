@@ -6,5 +6,6 @@ public record SubscriptionCreatedEvent(
     Guid SubscriptionId,
     Guid UserId,
     int PlanId,
+    string TelegramName,
     DateTime EndDate
 ) : DomainEvent;

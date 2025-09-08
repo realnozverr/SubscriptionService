@@ -17,7 +17,7 @@ public class SubscriptionShould
     private readonly FakeTimeProvider _timeProvider;
     public SubscriptionShould()
     {
-       _testUser = User.Create(TelegramId.Create(123), "vpn_id", UserStatus.Active);
+       _testUser = User.Create(TelegramId.Create(123), "vpn_id", "test_name", UserStatus.Active);
        _testPlan = Plan.Create(99, "Test plan", 100m, 30);
        _timeProvider = new FakeTimeProvider(new DateTimeOffset(2025, 1, 1,0,0,0,0, TimeSpan.Zero));
     }

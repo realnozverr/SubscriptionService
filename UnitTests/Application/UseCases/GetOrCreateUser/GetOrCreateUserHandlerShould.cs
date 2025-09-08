@@ -29,8 +29,8 @@ public class GetOrCreateUserHandlerShould
     public async Task Handle_Should_ReturnExistingUser_WhenUserWithTelegramIdAlreadyExists()
     {
         //Arrange
-        var existingUser = User.Create(TelegramId.Create(123), "228", UserStatus.Active);
-        var command = new GetOrCreateUserCommand(existingUser.TelegramId.Value);
+        var existingUser = User.Create(TelegramId.Create(123), "228", "test_name", UserStatus.Active);
+        var command = new GetOrCreateUserCommand(existingUser.TelegramId.Value, existingUser.TelegramName);
         
         _userRepositoryMock
             .Setup(r => r.GetByTelegramIdAsync(command.TelegramId, It.IsAny<CancellationToken>()))
@@ -51,7 +51,7 @@ public class GetOrCreateUserHandlerShould
     public async Task Handle_Should_CreateAndReturnNewUser_WhenUserWithTelegramIdDoesNotExist()
     {
         //Arrange
-        var command = new GetOrCreateUserCommand(228);
+        var command = new GetOrCreateUserCommand(228, "test_name");
         _userRepositoryMock
             .Setup(r => r.GetByTelegramIdAsync(command.TelegramId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((User?)null);

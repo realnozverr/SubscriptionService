@@ -51,6 +51,7 @@ namespace SubscriptionService.Infrastructure.Postgres.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     telegram_id = table.Column<long>(type: "bigint", nullable: false),
+                    telegram_name = table.Column<string>(type: "text", nullable: false),
                     vpn_identifier = table.Column<string>(type: "text", nullable: true),
                     status = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

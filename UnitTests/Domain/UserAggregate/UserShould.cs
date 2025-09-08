@@ -14,9 +14,10 @@ public class UserShould
         var telegramId = TelegramId.Create(12345);
         var userStatus = UserStatus.Active;
         var vpnIdentifier = "test_identifier";
+        var telegramName = "test_name";
 
         // Act
-        var user = User.Create(telegramId, vpnIdentifier, userStatus);
+        var user = User.Create(telegramId, vpnIdentifier, telegramName, userStatus);
 
         // Assert
         Assert.NotNull(user);
@@ -33,9 +34,10 @@ public class UserShould
         // Arrange
         var userStatus = UserStatus.Active;
         var vpnIdentifier = "test_identifier";
+        var telegramName = "test_name";
 
         // Act & Assert
-        var exception = Assert.Throws<ValueIsNullException>(() => User.Create(null, vpnIdentifier, userStatus));
+        var exception = Assert.Throws<ValueIsNullException>(() => User.Create(null, vpnIdentifier, telegramName, userStatus));
         Assert.Equal("TelegramId cannot be null.", exception.Message);
     }
 
@@ -45,9 +47,10 @@ public class UserShould
         // Arrange
         var telegramId = TelegramId.Create(12345);
         var vpnIdentifier = "test_identifier";
+        var telegramName = "test_name";
 
         // Act & Assert
-        var exception = Assert.Throws<ValueIsNullException>(() => User.Create(telegramId, vpnIdentifier, null));
+        var exception = Assert.Throws<ValueIsNullException>(() => User.Create(telegramId, vpnIdentifier, telegramName, null));
         Assert.Equal("UserStatus cannot be null.", exception.Message);
     }
 
@@ -57,9 +60,10 @@ public class UserShould
         // Arrange
         var telegramId = TelegramId.Create(12345);
         var userStatus = UserStatus.Active;
+        var telegramName = "test_name";
 
         // Act
-        var user = User.Create(telegramId, null, userStatus);
+        var user = User.Create(telegramId, null, telegramName, userStatus);
 
         // Assert
         Assert.NotNull(user);

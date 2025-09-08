@@ -65,7 +65,7 @@ public class Subscription : Aggregate<Guid>
 
         var subscription = new Subscription(user.Id, plan.Id, SubscriptionStatus.Active, startDateTime, endDateTime);
 
-        subscription.AddDomainEvent(new SubscriptionCreatedEvent(subscription.Id, user.Id, plan.Id, endDateTime));
+        subscription.AddDomainEvent(new SubscriptionCreatedEvent(subscription.Id, user.Id, plan.Id, user.TelegramName, endDateTime));
 
         return subscription;
     }

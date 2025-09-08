@@ -13,6 +13,7 @@ public class SubscriptionCreatedHandlerShould
         Guid.NewGuid(),
         Guid.NewGuid(),
         1,
+        "telegram_name",
         DateTime.UtcNow);
 
     [Fact]

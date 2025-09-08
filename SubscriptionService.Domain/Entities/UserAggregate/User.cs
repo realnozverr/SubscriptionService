@@ -12,25 +12,29 @@ public class User : Aggregate<Guid>
     private User(
         TelegramId telegramId,
         string? vpnIdentifier,
+        string telegramName,
         UserStatus status
     ) : this()
     {
         Id = Guid.NewGuid();
         TelegramId = telegramId;
         VpnIdentifier = vpnIdentifier;
+        TelegramName = telegramName;
         Status = status;
     }
 
     public TelegramId TelegramId { get; private set; }
+    public string TelegramName { get; private set; }
     public string? VpnIdentifier { get; private set; }
     public UserStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
-    public static User Create(TelegramId telegramId, string? vpnIdentifier, UserStatus status)
+    public static User Create(TelegramId telegramId, string? vpnIdentifier, string telegramName, UserStatus status)
     {
         ValidateTelegramId(telegramId);
         ValidateUserStatus(status);
-        return new User(telegramId, vpnIdentifier, status);
+        ValidateTelegramName(telegramName);
+        return new User(telegramId, vpnIdentifier, telegramName, status);
     }
     
     // TODO подумать когда валидировать
@@ -47,6 +51,14 @@ public class User : Aggregate<Guid>
         if (telegramId == null)
         {
             throw new ValueIsNullException("TelegramId cannot be null.");
+        }
+    }
+    
+    private static void ValidateTelegramName(string telegramName)
+    {
+        if (string.IsNullOrWhiteSpace(telegramName))
+        {
+            throw new ValueIsNullException("TelegramName cannot be null.");
         }
     }
 

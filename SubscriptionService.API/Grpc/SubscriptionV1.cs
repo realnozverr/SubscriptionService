@@ -32,7 +32,7 @@ public class SubscriptionV1 : Proto.SubscriptionV1.SubscriptionService.Subscript
 
     public override async Task<UserResponse> GetOrCreateUser(GetOrCreateUserRequest request, ServerCallContext context)
     {
-        var response = await _mediator.Send(new GetOrCreateUserCommand(request.TelegramId));
+        var response = await _mediator.Send(new GetOrCreateUserCommand(request.TelegramId, request.TelegramUsername));
         return response.IsSuccess
             ? new UserResponse
             {

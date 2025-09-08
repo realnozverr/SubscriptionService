@@ -30,6 +30,9 @@ public class
                 v => UserStatus.GetAll().Single(s => s.Id == v))
             .IsRequired()
             .HasColumnName("status");
+        
+        builder.Property(user => user.TelegramName)
+            .HasColumnName("telegram_name");
 
         builder.Property(user => user.CreatedAt)
             .IsRequired()

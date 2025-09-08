@@ -21,6 +21,7 @@ public class KafkaProducer(
                 eventId: domainEvent.EventId,
                 userId: domainEvent.UserId,
                 planId: domainEvent.PlanId,
+                telegramName: domainEvent.TelegramName,
                 endDate: domainEvent.EndDate),
             cancellationToken);
     }

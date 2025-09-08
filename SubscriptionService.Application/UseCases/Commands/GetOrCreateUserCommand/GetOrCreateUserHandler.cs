@@ -21,7 +21,7 @@ public class GetOrCreateUserHandler : IRequestHandler<GetOrCreateUserCommand, Re
         if (user is null)
         {
             await _unitOfWork.BeginTransactionAsync(cancellationToken);
-            user = User.Create(TelegramId.Create(request.TelegramId), null, UserStatus.Active);
+            user = User.Create(TelegramId.Create(request.TelegramId), null, request.TelegramName, UserStatus.Active);
             await _userRepository.AddAsync(user, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
         }

@@ -12,7 +12,7 @@ using SubscriptionService.Infrastructure.Postgres;
 namespace SubscriptionService.Infrastructure.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250829090226_InitialCreate")]
+    [Migration("20250908103307_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -126,6 +126,11 @@ namespace SubscriptionService.Infrastructure.Postgres.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer")
                         .HasColumnName("status");
+
+                    b.Property<string>("TelegramName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("telegram_name");
 
                     b.Property<string>("VpnIdentifier")
                         .HasColumnType("text")

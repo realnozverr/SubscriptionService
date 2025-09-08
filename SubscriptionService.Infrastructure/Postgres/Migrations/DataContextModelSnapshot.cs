@@ -124,6 +124,11 @@ namespace SubscriptionService.Infrastructure.Postgres.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
+                    b.Property<string>("TelegramName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("telegram_name");
+
                     b.Property<string>("VpnIdentifier")
                         .HasColumnType("text")
                         .HasColumnName("vpn_identifier");

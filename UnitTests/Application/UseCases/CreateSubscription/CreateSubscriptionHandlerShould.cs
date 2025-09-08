@@ -42,7 +42,7 @@ public class CreateSubscriptionHandlerShould
     public async Task Handle_Should_ReturnSuccess_WhenUserAndPlanExistAndNoActiveSubscription()
     {
         //Arrange
-        var user = User.Create(TelegramId.Create(123), "vpnId", UserStatus.Active);
+        var user = User.Create(TelegramId.Create(123), "vpnId","test_name", UserStatus.Active);
         var plan = Plan.Monthly;
         var command = new CreateSubscriptionCommand(user.Id, plan.Id);
 
